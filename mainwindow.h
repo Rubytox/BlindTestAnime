@@ -8,6 +8,8 @@
 #include <QGraphicsVideoItem>
 #include <QPushButton>
 
+#include <QList>
+
 #include <iostream>
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +25,9 @@ public:
     ~MainWindow();
 
     void playFile(const QUrl& file);
+    void addToPlaylist(const QUrl& file);
+    void addToPlaylist(const QString& file);
+
 
 public slots:
     void playClicked();
@@ -32,7 +37,10 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    QMediaPlayer *player;
-    QVideoWidget *videoWidget;
+    QMediaPlayer *_player;
+    QVideoWidget *_videoWidget;
+
+    int _current;
+    QList<QUrl> _playlist;
 };
 #endif // MAINWINDOW_H

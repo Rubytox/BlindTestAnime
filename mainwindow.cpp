@@ -9,51 +9,77 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    player = new QMediaPlayer;
+    _player = new QMediaPlayer;
 
+    QString baseUrl = "/home/rubytox/Vidéos/CL/Episodes/Saison1/";
+    addToPlaylist(baseUrl + "output.mp4");
+    addToPlaylist(baseUrl + "CODE LYOKO - EP01 - Teddy Gozilla-QCGixQKvTpA.mkv");
+    addToPlaylist(baseUrl + "CODE LYOKO - EP02 - Le voir pour le croire-d3EiLxiGYgs.mkv");
+    addToPlaylist(baseUrl + "CODE LYOKO - EP03 - Vacances dans la brume-I4AE3BvIxMQ.mkv");
+    addToPlaylist(baseUrl + "CODE LYOKO - EP04 - Carnet de bord-5nsklx84-jE.mkv");
+    addToPlaylist(baseUrl + "CODE LYOKO - EP05 - Big Bogue-SWnxzc-hOL8.mkv");
 
-    videoWidget = new QVideoWidget(ui->mediaContainer);
-    player->setVideoOutput(videoWidget);
+    _videoWidget = new QVideoWidget(ui->mediaContainer);
+    _player->setVideoOutput(_videoWidget);
 
-    ui->mainLayout->addWidget(videoWidget);
-    std::cout << "Player error state: " << player->error() << std::endl;
+    ui->mainLayout->addWidget(_videoWidget);
+    std::cout << "Player error state: " << _player->error() << std::endl;
 
-    connect(ui->buttonPlay, SIGNAL(clicked()), this, SLOT(playClicked()));
-    connect(ui->buttonPause, SIGNAL(clicked()), this, SLOT(pauseClicked()));
+    connect(ui->buttonPlay, SIGNAL(clicked()), _player, SLOT(play()));
+    connect(ui->buttonPause, SIGNAL(clicked()), _player, SLOT(pause()));
     connect(ui->buttonPrevious, SIGNAL(clicked()), this, SLOT(previousClicked()));
     connect(ui->buttonNext, SIGNAL(clicked()), this, SLOT(nextClicked()));
 
-    playFile(QUrl::fromLocalFile("/home/rubytox/Vidéos/CL/Episodes/Saison1/output.mp4"));
+    _current = 0;
+    std::cout << "Playing " << _playlist.at(_current).toString().toStdString() << std::endl;
+    playFile(_playlist.at(_current));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete _player;
+    delete _videoWidget;
 }
 
 void MainWindow::playFile(const QUrl &file)
 {
-    player->setMedia(file);
-    player->play();
+    std::cout << "Now playing " << file.toString().toStdString() << std::endl;
+    _player->setMedia(file);
+    _player->play();
+    std::cout << "Player status: " << _player->error() << std::endl;
+    std::cout << "Media status: " << _player->mediaStatus() << std::endl;
+}
+
+void MainWindow::addToPlaylist(const QUrl &file)
+{
+    _playlist << file;
+}
+
+void MainWindow::addToPlaylist(const QString &file)
+{
+    addToPlaylist(QUrl::fromLocalFile(file));
 }
 
 
 void MainWindow::playClicked()
 {
-    player->play();
+    _player->play();
 }
 
 void MainWindow::pauseClicked()
 {
-    player->pause();
+    _player->pause();
 }
 
 void MainWindow::previousClicked()
 {
-
+    if (_current > 0)
+        playFile(_playlist.at(--_current));
 }
 
 void MainWindow::nextClicked()
 {
-
+    if (_current < _playlist.size() - 1)
+        playFile(_playlist.at(++_current));
 }
