@@ -30,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonPrevious, SIGNAL(clicked()), this, SLOT(previousClicked()));
     connect(ui->buttonNext, SIGNAL(clicked()), this, SLOT(nextClicked()));
 
+    connect(_player, &QMediaPlayer::mediaStatusChanged, this, [&](QMediaPlayer::MediaStatus status) {
+        if (status == QMediaPlayer::LoadedMedia) randomPlace();
+    });
+
     _current = 0;
     std::cout << "Playing " << _playlist.at(_current).toString().toStdString() << std::endl;
     playFile(_playlist.at(_current));
@@ -44,8 +48,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::playFile(const QUrl &file)
 {
-    std::cout << "Now playing " << file.toString().toStdString() << std::endl;
     _player->setMedia(file);
+}
+
+void MainWindow::randomPlace()
+{
+    quint32 length = _player->duration();
+    quint32 span = 10000;  // 10s
+    quint32 start = QRandomGenerator64::global()->bounded(length - span);
+
+    std::cout << "Now playing " << _player->currentMedia().request().url().toString().toStdString() << " of length " << length << std::endl;
+    _player->setPosition(start);
+    int seconds = start / 1000;
+    int minutes = seconds / 60;
+    seconds %= 60;
+    std::cout << "Starting at position " << minutes << ":" << seconds << std::endl;
+
     _player->play();
     std::cout << "Player status: " << _player->error() << std::endl;
     std::cout << "Media status: " << _player->mediaStatus() << std::endl;

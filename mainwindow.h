@@ -10,6 +10,9 @@
 
 #include <QList>
 
+#include <QRandomGenerator64>
+#include <QThread>
+
 #include <iostream>
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +30,8 @@ public:
     void playFile(const QUrl& file);
     void addToPlaylist(const QUrl& file);
     void addToPlaylist(const QString& file);
+
+    void randomPlace();
 
 
 public slots:
