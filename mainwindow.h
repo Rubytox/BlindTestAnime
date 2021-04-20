@@ -39,6 +39,7 @@ public slots:
     void pauseClicked();
     void previousClicked();
     void nextClicked();
+    void toggleVideo();
 
 private:
     Ui::MainWindow *ui;

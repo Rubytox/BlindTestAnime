@@ -25,10 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->mainLayout->addWidget(_videoWidget);
     std::cout << "Player error state: " << _player->error() << std::endl;
 
+    _videoWidget->hide();
+
     connect(ui->buttonPlay, SIGNAL(clicked()), _player, SLOT(play()));
     connect(ui->buttonPause, SIGNAL(clicked()), _player, SLOT(pause()));
     connect(ui->buttonPrevious, SIGNAL(clicked()), this, SLOT(previousClicked()));
     connect(ui->buttonNext, SIGNAL(clicked()), this, SLOT(nextClicked()));
+    connect(ui->buttonToggleVideo, SIGNAL(clicked()), this, SLOT(toggleVideo()));
 
     connect(_player, &QMediaPlayer::mediaStatusChanged, this, [&](QMediaPlayer::MediaStatus status) {
         if (status == QMediaPlayer::LoadedMedia) randomPlace();
@@ -44,6 +47,11 @@ MainWindow::~MainWindow()
     delete ui;
     delete _player;
     delete _videoWidget;
+}
+
+void MainWindow::toggleVideo()
+{
+    _videoWidget->isHidden() ? _videoWidget->show() : _videoWidget->hide();
 }
 
 void MainWindow::playFile(const QUrl &file)
