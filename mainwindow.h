@@ -33,6 +33,8 @@ public:
 
     void randomPlace();
 
+    void showAnswer();
+
 
 public slots:
     void playClicked();
@@ -40,11 +42,14 @@ public slots:
     void previousClicked();
     void nextClicked();
     void toggleVideo();
+    void handleCountdown(qint64 position);
 
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *_player;
     QVideoWidget *_videoWidget;
+
+    quint32 _startPosition;
 
     int _current;
     QList<QUrl> _playlist;

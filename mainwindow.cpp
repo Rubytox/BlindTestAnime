@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
         if (status == QMediaPlayer::LoadedMedia) randomPlace();
     });
 
+    connect(_player, SIGNAL(positionChanged(qint64)), this, SLOT(handleCountdown(qint64)));
+
     _current = 0;
     std::cout << "Playing " << _playlist.at(_current).toString().toStdString() << std::endl;
     playFile(_playlist.at(_current));
@@ -51,7 +53,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::toggleVideo()
 {
-    _videoWidget->isHidden() ? _videoWidget->show() : _videoWidget->hide();
+    if (_videoWidget->isHidden()) {
+        _videoWidget->show();
+        ui->buttonToggleVideo->setText("Hide");
+        QUrl currentVideo = _playlist.at(_current);
+        QString mediaName = currentVideo.fileName();
+        ui->chronoLabel->setText(mediaName);
+    }
+    else {
+        _videoWidget->hide();
+        ui->buttonToggleVideo->setText("Show");
+    }
+}
+
+void MainWindow::handleCountdown(qint64 position)
+{
+    if (_player->state() != QMediaPlayer::PausedState) {
+        qint64 elapsedSeconds = (position - _startPosition) / 1000;
+        qint64 remainingSeconds = 5 - elapsedSeconds;
+
+        std::cout << "RemainingSeconds: " << remainingSeconds << std::endl;
+
+        ui->chronoLabel->setText(QString::number(remainingSeconds) + "s");
+
+        if (remainingSeconds < 0)
+            showAnswer();
+
+    }
+}
+
+void MainWindow::showAnswer()
+{
+    _player->pause();
+    toggleVideo();  // Show video
 }
 
 void MainWindow::playFile(const QUrl &file)
@@ -64,6 +98,7 @@ void MainWindow::randomPlace()
     quint32 length = _player->duration();
     quint32 span = 10000;  // 10s
     quint32 start = QRandomGenerator64::global()->bounded(length - span);
+    _startPosition = start;
 
     std::cout << "Now playing " << _player->currentMedia().request().url().toString().toStdString() << " of length " << length << std::endl;
     _player->setPosition(start);
