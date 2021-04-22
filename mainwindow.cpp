@@ -11,13 +11,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     _player = new QMediaPlayer;
 
-    QString baseUrl = "/home/rubytox/Vidéos/CL/Episodes/Saison1/";
+    //const QString baseUrl = "/home/rubytox/Vidéos/CL/Episodes/Saison1/";
+    /*
     addToPlaylist(baseUrl + "output.mp4");
     addToPlaylist(baseUrl + "CODE LYOKO - EP01 - Teddy Gozilla-QCGixQKvTpA.mkv");
     addToPlaylist(baseUrl + "CODE LYOKO - EP02 - Le voir pour le croire-d3EiLxiGYgs.mkv");
     addToPlaylist(baseUrl + "CODE LYOKO - EP03 - Vacances dans la brume-I4AE3BvIxMQ.mkv");
     addToPlaylist(baseUrl + "CODE LYOKO - EP04 - Carnet de bord-5nsklx84-jE.mkv");
     addToPlaylist(baseUrl + "CODE LYOKO - EP05 - Big Bogue-SWnxzc-hOL8.mkv");
+    */
+
+    QEntry first("Teddy Gozilla", "Thomas Romain", "Code Lyoko", 1, Entry::Type::OPENING, "/home/rubytox/Vidéos/CL/Episodes/Saison1/output.mp4");
+    addToPlaylist(first);
 
     _videoWidget = new QVideoWidget(ui->mediaContainer);
     _player->setVideoOutput(_videoWidget);
@@ -40,8 +45,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(_player, SIGNAL(positionChanged(qint64)), this, SLOT(handleCountdown(qint64)));
 
     _current = 0;
-    std::cout << "Playing " << _playlist.at(_current).toString().toStdString() << std::endl;
-    playFile(_playlist.at(_current));
+    std::cout << "Playing " << _playlist.at(_current).getName().toStdString() << std::endl;
+    playFile(_playlist.at(_current).getPath());
 }
 
 MainWindow::~MainWindow()
@@ -51,14 +56,23 @@ MainWindow::~MainWindow()
     delete _videoWidget;
 }
 
+QString MainWindow::formatTitle() const
+{
+    const QEntry& currentTrack = _playlist.at(_current);
+
+    return QString("%1 - %2 %3\n%4 - %5").arg(currentTrack.getAnime(),
+                                            currentTrack.getShortType(),
+                                            QString::number(currentTrack.getNumber()),
+                                            currentTrack.getName(),
+                                            currentTrack.getArtist());
+}
+
 void MainWindow::toggleVideo()
 {
     if (_videoWidget->isHidden()) {
         _videoWidget->show();
         ui->buttonToggleVideo->setText("Hide");
-        QUrl currentVideo = _playlist.at(_current);
-        QString mediaName = currentVideo.fileName();
-        ui->chronoLabel->setText(mediaName);
+        ui->chronoLabel->setText(formatTitle());
     }
     else {
         _videoWidget->hide();
@@ -112,6 +126,7 @@ void MainWindow::randomPlace()
     std::cout << "Media status: " << _player->mediaStatus() << std::endl;
 }
 
+/*
 void MainWindow::addToPlaylist(const QUrl &file)
 {
     _playlist << file;
@@ -120,6 +135,11 @@ void MainWindow::addToPlaylist(const QUrl &file)
 void MainWindow::addToPlaylist(const QString &file)
 {
     addToPlaylist(QUrl::fromLocalFile(file));
+}*/
+
+void MainWindow::addToPlaylist(const QEntry &file)
+{
+    _playlist << file;
 }
 
 
@@ -136,11 +156,11 @@ void MainWindow::pauseClicked()
 void MainWindow::previousClicked()
 {
     if (_current > 0)
-        playFile(_playlist.at(--_current));
+        playFile(_playlist.at(--_current).getPath());
 }
 
 void MainWindow::nextClicked()
 {
     if (_current < _playlist.size() - 1)
-        playFile(_playlist.at(++_current));
+        playFile(_playlist.at(++_current).getPath());
 }

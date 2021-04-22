@@ -15,6 +15,8 @@
 
 #include <iostream>
 
+#include "qentry.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,8 +30,9 @@ public:
     ~MainWindow();
 
     void playFile(const QUrl& file);
-    void addToPlaylist(const QUrl& file);
-    void addToPlaylist(const QString& file);
+    //void addToPlaylist(const QUrl& file);
+    //void addToPlaylist(const QString& file);
+    void addToPlaylist(const QEntry& file);
 
     void randomPlace();
 
@@ -45,6 +48,8 @@ public slots:
     void handleCountdown(qint64 position);
 
 private:
+    QString formatTitle() const;
+
     Ui::MainWindow *ui;
     QMediaPlayer *_player;
     QVideoWidget *_videoWidget;
@@ -52,6 +57,7 @@ private:
     quint32 _startPosition;
 
     int _current;
-    QList<QUrl> _playlist;
+    //QList<QUrl> _playlist;
+    QList<QEntry> _playlist;
 };
 #endif // MAINWINDOW_H
