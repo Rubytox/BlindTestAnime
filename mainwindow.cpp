@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     QEntry first("Renai Circulation", "Kana Hanazawa", "Bakemonogatari", 4, Entry::Type::OPENING, "C:\\Users\\cFAG\\Videos\\renai-circulation.mp4");
     addToPlaylist(first);
 
+    QEntryDAO::getInstance().save(first);
+
     _videoWidget = new QVideoWidget(ui->mediaContainer);
     _player->setVideoOutput(_videoWidget);
 
