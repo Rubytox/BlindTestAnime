@@ -14,7 +14,16 @@ MainWindow::MainWindow(QWidget *parent)
     QEntry first("Renai Circulation", "Kana Hanazawa", "Bakemonogatari", 4, Entry::Type::OPENING, "C:\\Users\\cFAG\\Videos\\renai-circulation.mp4");
     addToPlaylist(first);
 
-    QEntryDAO::getInstance().save(first);
+    QVector<QEntry> entries = QEntryDAO::getInstance().getAll();
+    for (auto& e: entries) {
+        std::cout << "Retrieved entry with values:" << std::endl;
+        std::cout << "\t- Name: " << e.getName().toStdString() << std::endl;
+        std::cout << "\t- Artist: " << e.getArtist().toStdString() << std::endl;
+        std::cout << "\t- Anime: " << e.getAnime().toStdString() << std::endl;
+        std::cout << "\t- Type: " << e.getType().toStdString() << std::endl;
+        std::cout << "\t- Number: " << e.getNumber() << std::endl;
+        std::cout << "\t- Path: " << e.getPath().toString().toStdString() << std::endl;
+    }
 
     _videoWidget = new QVideoWidget(ui->mediaContainer);
     _player->setVideoOutput(_videoWidget);

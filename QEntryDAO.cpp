@@ -1,8 +1,57 @@
 #include "QEntryDAO.h"
 
+Entry::Type toType(QString string)
+{
+    if (string == "Opening")
+        return Entry::Type::OPENING;
+    if (string == "Ending")
+        return Entry::Type::ENDING;
+    if (string == "OST")
+        return Entry::Type::OST;
+    return Entry::Type::NONE;
+}
+
 QEntry QEntryDAO::get(int id)
 {
-    return QEntry("Renai Circulation", "Kana Hanazawa", "Bakemonogatari", 4, Entry::Type::OPENING, "C:\\Users\\cFAG\\Videos\\renai-circulation.mp4");
+    QString query = "SELECT * FROM entries WHERE id = ?";
+    QSqlQuery stmt = ConnectionDB::getInstance().prepareStatement(query);
+    stmt.addBindValue(id);
+
+    stmt.exec();
+
+    if (stmt.first()) {
+        QString name = stmt.value("name").toString();
+        QString artist = stmt.value("artist").toString();
+        QString anime = stmt.value("anime").toString();
+        int number = stmt.value("number").toInt();
+        Entry::Type type = toType(stmt.value("type").toString());
+        QUrl path = QUrl::fromLocalFile(stmt.value("path").toString());
+
+        return QEntry(name, artist, anime, number, type, path);
+    }
+    exit(EXIT_FAILURE);
+}
+
+QVector<QEntry> QEntryDAO::getAll()
+{
+    QString query = "SELECT * FROM entries";
+    QSqlQuery stmt = ConnectionDB::getInstance().prepareStatement(query);
+
+    stmt.exec();
+
+    QVector<QEntry> result;
+
+    while (stmt.next()) {
+        QString name = stmt.value("name").toString();
+        QString artist = stmt.value("artist").toString();
+        QString anime = stmt.value("anime").toString();
+        int number = stmt.value("number").toInt();
+        Entry::Type type = toType(stmt.value("type").toString());
+        QUrl path = QUrl::fromLocalFile(stmt.value("path").toString());
+
+        result.append(QEntry(name, artist, anime, number, type, path));
+    }
+    return result;
 }
 
 void QEntryDAO::save(QEntry entry)
@@ -15,7 +64,7 @@ void QEntryDAO::save(QEntry entry)
     stmt.bindValue(":anime", entry.getAnime());
     stmt.bindValue(":number", entry.getNumber());
     stmt.bindValue(":type", entry.getType());
-    stmt.bindValue(":path", entry.getPath());
+    stmt.bindValue(":path", entry.getPath().toString(QUrl::RemoveScheme));
 
     stmt.exec();
 }

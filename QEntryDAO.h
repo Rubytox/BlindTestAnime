@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <QVector>
+
 #include "Dao.h"
 #include "QEntry.h"
 #include "ConnectionDB.h"
@@ -22,6 +24,8 @@ public:
     QEntry get(int id);
     void save(QEntry entry);
     void update(QEntry entry);
+
+    QVector<QEntry> getAll();
 };
 
 #endif // ENTRYDAO_H

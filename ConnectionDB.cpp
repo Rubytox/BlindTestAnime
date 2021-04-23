@@ -28,13 +28,6 @@ ConnectionDB::ConnectionDB()
 
 
         /*
-        QSqlQuery query("CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT)");
-        if (!query.isActive())
-            qWarning() << "ERROR:" << query.lastError().text();
-
-        if (!query.exec("INSERT INTO people(name) VALUES('Eddie')"))
-            qWarning() << "ERROR:" << query.lastError().text();
-
         query.prepare("SELECT name FROM people WHERE id = ?");
         query.addBindValue(1);
         if (!query.exec())
