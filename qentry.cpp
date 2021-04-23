@@ -1,4 +1,4 @@
-#include "qentry.h"
+#include "QEntry.h"
 
 
 QEntry::QEntry(QString &name,

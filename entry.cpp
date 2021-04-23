@@ -1,4 +1,4 @@
-#include "entry.h"
+#include "Entry.h"
 
 using namespace std;
 

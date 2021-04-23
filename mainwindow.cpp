@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 
 
@@ -11,17 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     _player = new QMediaPlayer;
 
-    //const QString baseUrl = "/home/rubytox/Vidéos/CL/Episodes/Saison1/";
-    /*
-    addToPlaylist(baseUrl + "output.mp4");
-    addToPlaylist(baseUrl + "CODE LYOKO - EP01 - Teddy Gozilla-QCGixQKvTpA.mkv");
-    addToPlaylist(baseUrl + "CODE LYOKO - EP02 - Le voir pour le croire-d3EiLxiGYgs.mkv");
-    addToPlaylist(baseUrl + "CODE LYOKO - EP03 - Vacances dans la brume-I4AE3BvIxMQ.mkv");
-    addToPlaylist(baseUrl + "CODE LYOKO - EP04 - Carnet de bord-5nsklx84-jE.mkv");
-    addToPlaylist(baseUrl + "CODE LYOKO - EP05 - Big Bogue-SWnxzc-hOL8.mkv");
-    */
-
-    QEntry first("Teddy Gozilla", "Thomas Romain", "Code Lyoko", 1, Entry::Type::OPENING, "/home/rubytox/Vidéos/CL/Episodes/Saison1/output.mp4");
+    QEntry first("Renai Circulation", "Kana Hanazawa", "Bakemonogatari", 4, Entry::Type::OPENING, "C:\\Users\\cFAG\\Videos\\renai-circulation.mp4");
     addToPlaylist(first);
 
     _videoWidget = new QVideoWidget(ui->mediaContainer);
@@ -84,7 +74,7 @@ void MainWindow::handleCountdown(qint64 position)
 {
     if (_player->state() != QMediaPlayer::PausedState) {
         qint64 elapsedSeconds = (position - _startPosition) / 1000;
-        qint64 remainingSeconds = 5 - elapsedSeconds;
+        qint64 remainingSeconds = 10 - elapsedSeconds;
 
         std::cout << "RemainingSeconds: " << remainingSeconds << std::endl;
 

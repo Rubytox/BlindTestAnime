@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-#include "qentry.h"
+#include "QEntry.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -1,7 +1,7 @@
 #ifndef QENTRY_H
 #define QENTRY_H
 
-#include "entry.h"
+#include "Entry.h"
 
 #include <QString>
 #include <QUrl>
