@@ -11,6 +11,14 @@
 
 #include <iostream>
 
+/**
+ * @brief The ConnectionDB class
+ * This class represents a connection to a database.
+ * It allows users to prepare statements.
+ * It is implemented following a Singleton design pattern
+ * in order to have a maximum of one connection to the
+ * same database.
+ */
 class ConnectionDB
 {
 private:

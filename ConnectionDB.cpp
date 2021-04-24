@@ -1,6 +1,10 @@
 #include "ConnectionDB.h"
 
-
+/**
+ * @brief ConnectionDB::ConnectionDB
+ * Connects to the SQLite database and creates the entries table
+ * if not existing.
+ */
 ConnectionDB::ConnectionDB()
 {
     const QString DRIVER("QSQLITE");
@@ -25,28 +29,35 @@ ConnectionDB::ConnectionDB()
             if (!query.isActive())
                 qWarning() << "ERROR:" << query.lastError().text();
         }
-
-
-        /*
-        query.prepare("SELECT name FROM people WHERE id = ?");
-        query.addBindValue(1);
-        if (!query.exec())
-            qWarning() << "ERROR:" << query.lastError().text();
-
-        if (query.first())
-            std::cout << query.value(0).toString().toStdString() << std::endl;
-        else
-            std::cout << "Person not found" << std::endl;
-            */
     }
 }
 
+/**
+ * @brief ConnectionDB::_instance
+ * This is the unique instance of the connection: it implements
+ * a Singleton design pattern.
+ */
 ConnectionDB ConnectionDB::_instance;
+/**
+ * @brief ConnectionDB::getInstance
+ *
+ * @return The unique instance of the database connection.
+ */
 ConnectionDB& ConnectionDB::getInstance() noexcept
 {
     return _instance;
 }
 
+/**
+ * @brief ConnectionDB::prepareStatement
+ * Wrapper for easy creation of prepared statements.
+ * It simply prepares the given request for immediate use
+ * in the current connection.
+ *
+ * @param sql 	The query to prepare.
+ *
+ * @return	An object representign the prepared statement.
+ */
 QSqlQuery ConnectionDB::prepareStatement(QString sql)
 {
     QSqlQuery stmt;

@@ -2,7 +2,13 @@
 #include "ui_mainwindow.h"
 
 
-
+/**
+ * @brief MainWindow::MainWindow
+ * This constructor sets up the application:
+ * - loads a playlist of songs,
+ * - creates the media player,
+ * - initializes all signals.
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -50,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     playFile(_playlist.at(_current).getPath());
 }
 
+/**
+ * @brief MainWindow::~MainWindow
+ */
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -57,6 +66,13 @@ MainWindow::~MainWindow()
     delete _videoWidget;
 }
 
+/**
+ * @brief MainWindow::formatTitle
+ *
+ * @return 	The metadata of the entry in the format:
+ * 			ANIME NAME - TYPE NUMBER
+ * 			SONG NAME - ARTIST
+ */
 QString MainWindow::formatTitle() const
 {
     const QEntry& currentTrack = _playlist.at(_current);
@@ -68,6 +84,15 @@ QString MainWindow::formatTitle() const
                                             currentTrack.getArtist());
 }
 
+/**
+ * @brief MainWindow::toggleVideo
+ * If the media player is hidden, show it.
+ * If the media player is shown, hide it.
+ * Change the show/hide button accordingly.
+ *
+ * While the media player is hidden, the chrono label displays the countdown.
+ * While the media player is shown, the chrono label displays the metadata of the track.
+ */
 void MainWindow::toggleVideo()
 {
     if (_videoWidget->isHidden()) {
@@ -81,6 +106,13 @@ void MainWindow::toggleVideo()
     }
 }
 
+/**
+ * @brief MainWindow::handleCountdown
+ * This slot pauses the media player after it has played for 10 seconds.
+ * It updates the value of the chrono label accordingly.
+ *
+ * @param position	The current position in the media file.
+ */
 void MainWindow::handleCountdown(qint64 position)
 {
     if (_player->state() != QMediaPlayer::PausedState) {
