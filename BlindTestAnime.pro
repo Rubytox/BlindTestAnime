@@ -11,6 +11,7 @@ CONFIG += console
 
 SOURCES += \
     ConnectionDB.cpp \
+    DatabaseWindow.cpp \
     Entry.cpp \
     QEntryDAO.cpp \
     main.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 
 HEADERS += \
     ConnectionDB.h \
+    DatabaseWindow.h \
     Entry.h \
     Dao.h \
     MainWindow.h \
@@ -26,6 +28,7 @@ HEADERS += \
     QEntryDAO.h
 
 FORMS += \
+    DatabaseWindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -39,6 +39,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     _videoWidget->hide();
 
+    initSignals();
+
+    _current = 0;
+    std::cout << "Playing " << _playlist.at(_current).getName().toStdString() << std::endl;
+    //playFile(_playlist.at(_current).getPath());
+}
+
+void MainWindow::initSignals()
+{
     connect(ui->buttonPlay, SIGNAL(clicked()), _player, SLOT(play()));
     connect(ui->buttonPause, SIGNAL(clicked()), _player, SLOT(pause()));
     connect(ui->buttonPrevious, SIGNAL(clicked()), this, SLOT(previousClicked()));
@@ -50,10 +59,6 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(_player, SIGNAL(positionChanged(qint64)), this, SLOT(handleCountdown(qint64)));
-
-    _current = 0;
-    std::cout << "Playing " << _playlist.at(_current).getName().toStdString() << std::endl;
-    playFile(_playlist.at(_current).getPath());
 }
 
 /**

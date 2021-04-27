@@ -17,6 +17,7 @@
 
 #include "QEntry.h"
 #include "QEntryDAO.h"
+#include "DatabaseWindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,8 +32,6 @@ public:
     ~MainWindow();
 
     void playFile(const QUrl& file);
-    //void addToPlaylist(const QUrl& file);
-    //void addToPlaylist(const QString& file);
     void addToPlaylist(const QEntry& file);
 
     void randomPlace();
@@ -50,6 +49,7 @@ public slots:
 
 private:
     QString formatTitle() const;
+    void initSignals();
 
     Ui::MainWindow *ui;
     QMediaPlayer *_player;
