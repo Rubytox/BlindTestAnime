@@ -35,6 +35,10 @@ Thumbs.db
 /.qmake.cache
 /.qmake.stash
 
+# Visual Studio Files
+debug/*
+release/*
+
 # qtcreator generated files
 *.pro.user*
 
