@@ -38,6 +38,8 @@ Thumbs.db
 # Visual Studio Files
 debug/*
 release/*
+.vs/*
+entries.db
 
 # qtcreator generated files
 *.pro.user*
