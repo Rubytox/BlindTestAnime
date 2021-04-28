@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     QEntry first("Renai Circulation", "Kana Hanazawa", "Bakemonogatari", 4, Entry::Type::OPENING, "C:\\Users\\cFAG\\Videos\\renai-circulation.mp4");
     addToPlaylist(first);
 
+    QEntryDAO::getInstance().save(first);
+
     QVector<QEntry> entries = QEntryDAO::getInstance().getAll();
     for (auto& e: entries) {
         std::cout << "Retrieved entry with values:" << std::endl;
@@ -38,6 +40,10 @@ MainWindow::MainWindow(QWidget *parent)
     std::cout << "Player error state: " << _player->error() << std::endl;
 
     _videoWidget->hide();
+
+    _databaseHandle = new DatabaseWindow;
+    _databaseHandle->setWindowModality(Qt::ApplicationModal);
+    _databaseHandle->show();
 
     initSignals();
 
@@ -69,6 +75,7 @@ MainWindow::~MainWindow()
     delete ui;
     delete _player;
     delete _videoWidget;
+    delete _databaseHandle;
 }
 
 /**

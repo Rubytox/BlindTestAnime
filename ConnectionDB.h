@@ -31,6 +31,8 @@ private:
 public:
     static ConnectionDB& getInstance() noexcept;
 
+    QSqlDatabase& getConnection();
+
     QSqlQuery prepareStatement(QString sql);
 };
 

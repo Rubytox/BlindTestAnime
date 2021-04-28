@@ -54,6 +54,23 @@ QVector<QEntry> QEntryDAO::getAll()
     return result;
 }
 
+QSqlTableModel* QEntryDAO::getModel()
+{
+    QSqlTableModel *model = new QSqlTableModel(NULL, ConnectionDB::getInstance().getConnection());
+
+    model->setTable("entries");
+    model->select();
+	model->setHeaderData(0, Qt::Horizontal, "ID");
+	model->setHeaderData(1, Qt::Horizontal, "Name");
+	model->setHeaderData(2, Qt::Horizontal, "Artist");
+	model->setHeaderData(3, Qt::Horizontal, "Anime");
+	model->setHeaderData(4, Qt::Horizontal, "Number");
+	model->setHeaderData(5, Qt::Horizontal, "Type");
+	model->setHeaderData(6, Qt::Horizontal, "Path");
+
+    return model;
+}
+
 void QEntryDAO::save(QEntry entry)
 {
     QString query = "INSERT INTO entries (name, artist, anime, number, type, path)"
@@ -64,7 +81,7 @@ void QEntryDAO::save(QEntry entry)
     stmt.bindValue(":anime", entry.getAnime());
     stmt.bindValue(":number", entry.getNumber());
     stmt.bindValue(":type", entry.getType());
-    stmt.bindValue(":path", entry.getPath().toString(QUrl::RemoveScheme));
+    stmt.bindValue(":path", entry.getPath().toString(QUrl::RemoveScheme).mid(3));
 
     stmt.exec();
 }

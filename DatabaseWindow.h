@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include <QSqlTableModel>
+
+#include "QEntryDAO.h"
+
 namespace Ui {
 class DatabaseWindow;
 }
@@ -17,6 +21,8 @@ public:
 
 private:
     Ui::DatabaseWindow *ui;
+
+    QSqlTableModel* _model;
 };
 
 #endif // DATABASEWINDOW_H

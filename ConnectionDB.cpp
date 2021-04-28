@@ -30,6 +30,9 @@ ConnectionDB::ConnectionDB()
                 qWarning() << "ERROR:" << query.lastError().text();
         }
     }
+    else {
+        std::cout << "Driver not available" << std::endl;
+    }
 }
 
 /**
@@ -46,6 +49,11 @@ ConnectionDB ConnectionDB::_instance;
 ConnectionDB& ConnectionDB::getInstance() noexcept
 {
     return _instance;
+}
+
+QSqlDatabase& ConnectionDB::getConnection()
+{
+    return _connection;
 }
 
 /**

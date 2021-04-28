@@ -5,6 +5,8 @@
 
 #include <QVector>
 
+#include <QSqlTableModel>
+
 #include "Dao.h"
 #include "QEntry.h"
 #include "ConnectionDB.h"
@@ -26,6 +28,7 @@ public:
     void update(QEntry entry);
 
     QVector<QEntry> getAll();
+    QSqlTableModel* getModel();
 };
 
 #endif // ENTRYDAO_H

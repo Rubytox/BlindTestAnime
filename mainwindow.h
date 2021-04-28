@@ -58,7 +58,8 @@ private:
     quint32 _startPosition;
 
     int _current;
-    //QList<QUrl> _playlist;
     QList<QEntry> _playlist;
+
+    DatabaseWindow *_databaseHandle;
 };
 #endif // MAINWINDOW_H

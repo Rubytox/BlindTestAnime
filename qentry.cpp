@@ -11,7 +11,7 @@ QEntry::QEntry(QString &name,
                                    anime.toStdString(),
                                    number,
                                    type,
-                                   path.toString().toStdString())
+                                   path.toString(QUrl::RemoveScheme).mid(3).toStdString())
 {
 }
 
